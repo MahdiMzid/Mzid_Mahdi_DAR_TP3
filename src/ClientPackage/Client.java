@@ -20,6 +20,7 @@ public class Client {
 			Scanner scanner = new Scanner(System.in);
 			OutputStream os = socket.getOutputStream();
 			InputStream is = socket.getInputStream();
+			
 			// Flux de traitement
 			ObjectOutputStream oos = new ObjectOutputStream(os);
 			ObjectInputStream ois = new ObjectInputStream(is);

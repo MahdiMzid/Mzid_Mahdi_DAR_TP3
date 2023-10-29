@@ -35,6 +35,7 @@ public class Server extends Thread{
 		}
 		public void run() {
 			try {
+				
 				InputStream is = socket.getInputStream();
 				OutputStream os = socket.getOutputStream();
 				ObjectInputStream ois = new ObjectInputStream(is);
