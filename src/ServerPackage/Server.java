@@ -2,6 +2,8 @@ package ServerPackage;
 import java.io.*;
 import java.net.*;
 
+import OperationPackage.Operation;
+
 
 
 public class Server extends Thread{
@@ -33,10 +35,34 @@ public class Server extends Thread{
 		}
 		public void run() {
 			try {
-				PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
-				pw.println("Client numéro "+numClient+" Votre address IP :"+socket.getRemoteSocketAddress());
+				InputStream is = socket.getInputStream();
+				OutputStream os = socket.getOutputStream();
+				ObjectInputStream ois = new ObjectInputStream(is);
+				ObjectOutputStream oos = new ObjectOutputStream(os);
+
+				Operation o =(Operation)ois.readObject();
+				switch (o.getOperation()) {
+				case '+':
+					o.setResult(o.getOp1() + o.getOp2());
+					break;
+				case '-':
+					o.setResult(o.getOp1() - o.getOp2());
+					break;
+				case '*':
+					o.setResult(o.getOp1() * o.getOp2());
+					break;
+				case '/':
+					o.setResult(o.getOp1() / o.getOp2());
+					break;
+					
+
+				default:
+					break;
+				}
+				// Envoie d'objet
+				oos.writeObject(o);
 				socket.close();
-			} catch (IOException e) {
+			} catch (IOException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
